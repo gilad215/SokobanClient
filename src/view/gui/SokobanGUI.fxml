@@ -66,6 +66,7 @@
                            <Insets left="10.0" />
                        </VBox.margin>
                    </Text>
+                   <Button text="Solve Level" onAction="#solve"/>
 
                </children>
        </VBox>

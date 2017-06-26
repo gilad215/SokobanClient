@@ -8,6 +8,10 @@ import model.policy.MySokobanPolicy;
 import model.policy.Policy;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Observable;
@@ -106,6 +110,22 @@ public class MyModel extends Observable implements Model {
                 }
             }
         });
+
+    }
+
+    @Override
+    public void solve() throws IOException {
+        System.out.println("HEY SOLVER");
+        String ip="127.0.0.1";
+        int port=8080;
+        Socket clientsocket=new Socket(ip,port);
+        ObjectOutputStream outToServer=new ObjectOutputStream(clientsocket.getOutputStream());
+        ObjectInputStream inFromServer = new ObjectInputStream(clientsocket.getInputStream());
+
+        outToServer.writeObject(this.getLvl().getBoard());
+        outToServer.close();
+        inFromServer.close();
+        clientsocket.close();
 
     }
 

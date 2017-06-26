@@ -2,6 +2,7 @@ package controller;
 
 import model.data.Command;
 
+import java.io.IOException;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
@@ -34,6 +35,8 @@ public class Controller  {
                             cmd.execute();
                     } catch (InterruptedException e) {
                         // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    } catch (IOException e) {
                         e.printStackTrace();
                     }
                 }

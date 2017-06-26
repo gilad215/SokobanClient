@@ -316,6 +316,14 @@ public class SokobanGUIController extends Observable implements Initializable, V
     }
     private int getTimer(){return this.timercount;}
 
+    @FXML
+    private void solve()
+    {
+        List<String> params = new LinkedList<String>();
+        params.add("solve");
+        this.setChanged();
+        this.notifyObservers(params);
+    }
 
 }
 

@@ -1,5 +1,6 @@
 package model.data;
 
+import java.io.IOException;
 import java.util.List;
 
 public abstract class Command{
@@ -10,5 +11,5 @@ public abstract class Command{
         this.params = params;
     }
 
-    public abstract void execute();
+    public abstract void execute() throws IOException;
 }
