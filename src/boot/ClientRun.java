@@ -4,7 +4,7 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 import view.gui.GuiRun;
 
-public class Run extends Application {
+public class ClientRun extends Application {
     private GuiRun gui=new GuiRun();
 
     public static void main(String[] args) {

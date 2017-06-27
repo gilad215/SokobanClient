@@ -11,5 +11,5 @@ public abstract class Command{
         this.params = params;
     }
 
-    public abstract void execute() throws IOException;
+    public abstract void execute() throws IOException, ClassNotFoundException;
 }

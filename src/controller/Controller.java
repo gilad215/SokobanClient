@@ -12,7 +12,7 @@ public class Controller  {
     private boolean isStopped = false;
 
     public Controller() {
-        queue = new ArrayBlockingQueue<Command>(10);
+        queue = new ArrayBlockingQueue<Command>(50);
     }
 
     public void insertCommand(Command command) {
@@ -32,7 +32,17 @@ public class Controller  {
                     try {
                         Command cmd = queue.poll(1, TimeUnit.SECONDS);
                         if (cmd != null)
-                            cmd.execute();
+							try {
+                                if(queue.size()<=2)
+								cmd.execute();
+                                else
+                                {
+                                    cmd.execute();
+                                }
+							} catch (ClassNotFoundException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
                     } catch (InterruptedException e) {
                         // TODO Auto-generated catch block
                         e.printStackTrace();

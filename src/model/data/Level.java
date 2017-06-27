@@ -9,7 +9,8 @@ public class   Level implements Serializable{
 
     private ArrayList<Point> goals;
     private ArrayList<ArrayList<Character>> board;
-
+    private String name;
+    private static final long serialVersionUID = 1113799434508676095L;
 
     public Level(ArrayList<ArrayList<Character>> board) {
 
@@ -73,6 +74,14 @@ public class   Level implements Serializable{
             }
         }
         return null;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
 }

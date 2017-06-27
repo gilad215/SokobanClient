@@ -8,18 +8,18 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.concurrent.TimeUnit;
 
 public class MyController implements Observer {
     private View ui;
     private Model model;
     private Controller controller;
-    private HashMap<String,Command> commands;
+    private HashMap<String, Command> commands;
 
     public MyController(View v, Model m) {
         ui = v;
         model = m;
-
-        controller=new Controller();
+        controller = new Controller();
         controller.start();
         initCommands();
 
@@ -28,12 +28,12 @@ public class MyController implements Observer {
     protected void initCommands() {
         commands = new HashMap<String, Command>();
         commands.put("MOVE", new MoveLevelCommand(model));
-        commands.put("DISPLAY", new DisplayLevelCommand(model,ui));
+        commands.put("DISPLAY", new DisplayLevelCommand(model, ui));
         commands.put("LOAD", new LoadLevelCommand(model));
-        commands.put("SAVE",new SaveLevelCommand(model));
-        commands.put("LEADERBOARD",new LeaderboardCommand(model));
-        commands.put("ADDUSER",new AddUserCommand(model));
-        commands.put("SOLVE",new SolveCommand(model));
+        commands.put("SAVE", new SaveLevelCommand(model));
+        commands.put("LEADERBOARD", new LeaderboardCommand(model));
+        commands.put("ADDUSER", new AddUserCommand(model));
+        commands.put("SOLVE", new SolveCommand(model));
 
 
     }
@@ -48,9 +48,12 @@ public class MyController implements Observer {
 
             return;
         }
-        System.out.println("sending"+params);
+        System.out.println("sending: " + commandKey + "," + params + " params size:" + params.size());
         c.setParams(params);
         controller.insertCommand(c);
+    }
+
+
     }
 
 
@@ -126,4 +129,4 @@ public class MyController implements Observer {
                         d.display();
 
     */
-}
+

@@ -12,9 +12,11 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Observable;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -99,38 +101,64 @@ public class MyModel extends Observable implements Model {
     }
 
     @Override
-    public void showLeaderboard() throws FileNotFoundException {
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    tableUtil.showLeaderboard();
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
+    public void showLeaderboard() throws IOException {
+        String trigger="trigger";
+        String ip="127.0.0.1";
+        int port=5555;
+        Socket clientsocket=new Socket(ip,port);
+        ObjectOutputStream outToServer=new ObjectOutputStream(clientsocket.getOutputStream());
+        outToServer.writeObject(trigger);
 
     }
 
     @Override
-    public void solve() throws IOException {
-        System.out.println("HEY SOLVER");
+    public void solve() throws IOException, ClassNotFoundException {
+        String solution=null;
         String ip="127.0.0.1";
-        int port=8080;
+        int port=5555;
         Socket clientsocket=new Socket(ip,port);
         ObjectOutputStream outToServer=new ObjectOutputStream(clientsocket.getOutputStream());
         ObjectInputStream inFromServer = new ObjectInputStream(clientsocket.getInputStream());
 
-        outToServer.writeObject(this.getLvl().getBoard());
+        outToServer.writeObject(this.getLvl());
+        try {
+			solution=(String)inFromServer.readObject();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         outToServer.close();
         inFromServer.close();
         clientsocket.close();
+        if(solution!=null)
+        {
+            System.out.println("found solution");
+            System.out.println(solution);
+            String[] arr=solution.split(" ");
+            LinkedList<String> params=new LinkedList<>();
+            params.addAll(Arrays.asList(arr));
+            this.setChanged();
+            this.notifyObservers(params);
+        }
+
+
 
     }
 
     @Override
     public void addUser(String fn, String ln, int steps, int time) {
-        tableUtil.addUser(new User(tableUtil.getLvlid(),fn,ln,steps,time));
+        User user=new User(tableUtil.getLvlid(),fn,ln,steps,time);
+        String ip="127.0.0.1";
+        int port=5555;
+        Socket clientsocket= null;
+        try {
+            clientsocket = new Socket(ip,port);
+            ObjectOutputStream outToServer=new ObjectOutputStream(clientsocket.getOutputStream());
+            ObjectInputStream inFromServer = new ObjectInputStream(clientsocket.getInputStream());
+            outToServer.writeObject(user);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 }

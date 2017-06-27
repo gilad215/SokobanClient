@@ -1,9 +1,10 @@
 package db;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity(name="Games")
-public class User {
+public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int GameID;

@@ -10,6 +10,11 @@ public class SolveCommand extends Command {
     public SolveCommand(Model m){this.model=m;}
     @Override
     public void execute() throws IOException {
-        this.model.solve();
+        try {
+			this.model.solve();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
 }

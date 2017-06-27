@@ -28,6 +28,12 @@
                       <MenuItem mnemonicParsing="false" onAction="#showLeaderBoards" text="Show Leaderboards" />
                   </items>
             </Menu>
+            <Menu mnemonicParsing="false" text="Solver">
+                <items>
+                    <MenuItem mnemonicParsing="false" onAction="#solve" text="Solve Level"/>
+                    <MenuItem mnemonicParsing="false" text="Hint"/>
+                </items>
+            </Menu>
         </menus>
       </MenuBar>
    </top>
@@ -66,8 +72,6 @@
                            <Insets left="10.0" />
                        </VBox.margin>
                    </Text>
-                   <Button text="Solve Level" onAction="#solve"/>
-
                </children>
        </VBox>
    </left>

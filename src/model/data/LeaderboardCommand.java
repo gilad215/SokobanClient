@@ -3,6 +3,7 @@ package model.data;
 import model.Model;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 
 public class LeaderboardCommand extends Command {
     private Model model;
@@ -14,10 +15,12 @@ public class LeaderboardCommand extends Command {
 
     @Override
     public void execute() {
-        try {
-            model.showLeaderboard();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+
+            try {
+                model.showLeaderboard();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
     }
-}
+    }

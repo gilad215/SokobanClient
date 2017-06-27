@@ -1,9 +1,12 @@
 package model.data;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class MySokobanLoader implements Loader {
     private HashMap<String, LevelLoader> fileTypes;
@@ -55,7 +58,16 @@ public class MySokobanLoader implements Loader {
 
             }
             System.out.println("Level from type:"+extension.toUpperCase()+" has been loaded.");
+            setLevelname();
         }
+    }
+
+    private void setLevelname()
+    {
+        File file=new File(pathToFile);
+        int i=file.getName().indexOf('.');
+        this.lvl.setName(file.getName().substring(0,i));
+        System.out.println("LEVEL NAME:"+lvl.getName());
     }
 
 
