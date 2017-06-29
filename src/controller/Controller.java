@@ -33,12 +33,7 @@ public class Controller  {
                         Command cmd = queue.poll(1, TimeUnit.SECONDS);
                         if (cmd != null)
 							try {
-                                if(queue.size()<=2)
 								cmd.execute();
-                                else
-                                {
-                                    cmd.execute();
-                                }
 							} catch (ClassNotFoundException e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();

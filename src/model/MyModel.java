@@ -11,6 +11,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.Inet4Address;
 import java.net.Socket;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -26,6 +27,7 @@ public class MyModel extends Observable implements Model {
     private Loader loader;
     private Saver saver;
     private TableUtil tableUtil;
+    private LinkedList<String> Hints;
 
 
     public MyModel() {tableUtil=new TableUtil();}
@@ -102,17 +104,23 @@ public class MyModel extends Observable implements Model {
 
     @Override
     public void showLeaderboard() throws IOException {
-        String trigger="trigger";
-        String ip="127.0.0.1";
-        int port=5555;
-        Socket clientsocket=new Socket(ip,port);
-        ObjectOutputStream outToServer=new ObjectOutputStream(clientsocket.getOutputStream());
-        outToServer.writeObject(trigger);
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    tableUtil.showLeaderboard();
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
     }
 
     @Override
     public void solve() throws IOException, ClassNotFoundException {
+        String localip=Inet4Address.getLocalHost().getHostAddress();
+        System.out.println("LOCAL IP:"+localip);
         String solution=null;
         String ip="127.0.0.1";
         int port=5555;
@@ -132,33 +140,28 @@ public class MyModel extends Observable implements Model {
         clientsocket.close();
         if(solution!=null)
         {
-            System.out.println("found solution");
-            System.out.println(solution);
-            String[] arr=solution.split(" ");
-            LinkedList<String> params=new LinkedList<>();
-            params.addAll(Arrays.asList(arr));
-            this.setChanged();
-            this.notifyObservers(params);
+            String finalSolution = solution;
+            System.out.println("FOUND SOLUTION FROM SERVER:"+finalSolution);
+            Thread t=new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    String[] arr= finalSolution.split(" ");
+                    for (String act:arr) {
+                        try {
+                            Thread.sleep(500);
+                            System.out.println("Moving "+act+"..");
+                            move(act);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            });t.start();
         }
-
-
-
     }
 
     @Override
     public void addUser(String fn, String ln, int steps, int time) {
-        User user=new User(tableUtil.getLvlid(),fn,ln,steps,time);
-        String ip="127.0.0.1";
-        int port=5555;
-        Socket clientsocket= null;
-        try {
-            clientsocket = new Socket(ip,port);
-            ObjectOutputStream outToServer=new ObjectOutputStream(clientsocket.getOutputStream());
-            ObjectInputStream inFromServer = new ObjectInputStream(clientsocket.getInputStream());
-            outToServer.writeObject(user);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+        tableUtil.addUser(new User(tableUtil.getLvlid(),fn,ln,steps,time));
     }
 }
