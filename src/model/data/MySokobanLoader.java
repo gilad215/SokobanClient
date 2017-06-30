@@ -58,17 +58,10 @@ public class MySokobanLoader implements Loader {
 
             }
             System.out.println("Level from type:"+extension.toUpperCase()+" has been loaded.");
-            setLevelname();
         }
     }
 
-    private void setLevelname()
-    {
-        File file=new File(pathToFile);
-        int i=file.getName().indexOf('.');
-        this.lvl.setName(file.getName().substring(0,i));
-        System.out.println("LEVEL NAME:"+lvl.getName());
-    }
+
 
 
 }

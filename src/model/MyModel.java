@@ -128,7 +128,7 @@ public class MyModel extends Observable implements Model {
         ObjectOutputStream outToServer=new ObjectOutputStream(clientsocket.getOutputStream());
         ObjectInputStream inFromServer = new ObjectInputStream(clientsocket.getInputStream());
 
-        outToServer.writeObject(this.getLvl());
+        outToServer.writeObject(this.getLvl().getBoard());
         try {
 			solution=(String)inFromServer.readObject();
 		} catch (Exception e) {
@@ -145,12 +145,30 @@ public class MyModel extends Observable implements Model {
             Thread t=new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    String[] arr= finalSolution.split(" ");
-                    for (String act:arr) {
+                    char[] arr=finalSolution.toCharArray();
+                    for (char act:arr) {
                         try {
                             Thread.sleep(500);
-                            System.out.println("Moving "+act+"..");
-                            move(act);
+                            switch (act) {
+                                case('u'): {
+                                    move("up");
+                                    break;
+                                }
+                                case('l'):{
+                                    move("left");
+                                    break;
+                                }
+                                case('d'):
+                                {
+                                    move("down");
+                                    break;
+                                }
+                                case('r'):
+                                {
+                                    move("right");
+                                    break;
+                                }
+                            }
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
