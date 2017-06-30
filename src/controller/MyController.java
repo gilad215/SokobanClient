@@ -35,6 +35,8 @@ public class MyController implements Observer {
         commands.put("LEADERBOARD", new LeaderboardCommand(model));
         commands.put("ADDUSER", new AddUserCommand(model));
         commands.put("SOLVE", new SolveCommand(model));
+        commands.put("HINT",new HintCommand(model));
+        commands.put("DISPLAYHINT",new DisplayHintCommand(ui));
 
 
     }

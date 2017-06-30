@@ -179,6 +179,42 @@ public class MyModel extends Observable implements Model {
     }
 
     @Override
+    public void hint() throws IOException, ClassCastException {
+        String localip=Inet4Address.getLocalHost().getHostAddress();
+        System.out.println("LOCAL IP:"+localip);
+        String solution=null;
+        String ip="127.0.0.1";
+        int port=5555;
+        Socket clientsocket=new Socket(ip,port);
+        ObjectOutputStream outToServer=new ObjectOutputStream(clientsocket.getOutputStream());
+        ObjectInputStream inFromServer = new ObjectInputStream(clientsocket.getInputStream());
+
+        outToServer.writeObject(this.getLvl().getBoard());
+        try {
+            solution=(String)inFromServer.readObject();
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        outToServer.close();
+        inFromServer.close();
+        clientsocket.close();
+        if(solution!=null) {
+            char[] hints = solution.toCharArray();
+            System.out.println("FOUND HINT FROM SERVER:" + hints[0]);
+            StringBuilder hint = new StringBuilder();
+            hint.append(hints[0]);
+            LinkedList<String> params=new LinkedList<>();
+            params.add("displayhint");
+            params.add(hint.toString());
+            this.setChanged();
+            this.notifyObservers(params);
+
+
+        }
+    }
+
+    @Override
     public void addUser(String fn, String ln, int steps, int time) {
         tableUtil.addUser(new User(tableUtil.getLvlid(),fn,ln,steps,time));
     }

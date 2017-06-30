@@ -11,6 +11,7 @@ public interface Model {
     void move(String direction);
     void showLeaderboard() throws IOException;
     void solve() throws IOException, ClassNotFoundException;
+    void hint() throws IOException,ClassCastException;
     void addUser(String fn, String ln, int steps, int time);
     public Level getLvl();
 

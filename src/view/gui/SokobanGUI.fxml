@@ -31,7 +31,7 @@
             <Menu mnemonicParsing="false" text="Solver">
                 <items>
                     <MenuItem mnemonicParsing="false" onAction="#solve" text="Solve Level"/>
-                    <MenuItem mnemonicParsing="false" text="Hint"/>
+                    <MenuItem mnemonicParsing="false" onAction="#hint" text="Hint"/>
                 </items>
             </Menu>
         </menus>

@@ -9,13 +9,16 @@ import javafx.beans.property.StringProperty;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TextInputDialog;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -194,6 +197,46 @@ public class SokobanGUIController extends Observable implements Initializable, V
 	}
 
     @Override
+    public void displayHint(String s) {
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                        alert.setTitle("Hint!");
+                        alert.setHeaderText("Look, a Hint is Ready for you!");
+                        switch(s)
+                        {
+                            case("u"):
+                            {
+                                alert.setContentText("Go Up!");
+                                break;
+                            }
+                            case("d"):
+                            {
+                                alert.setContentText("Go Down!");
+                                break;
+                            }
+                            case("l"):
+                            {
+                                alert.setContentText("Go Left!");
+                                break;
+                            }
+                            case("r"):
+                            {
+                                alert.setContentText("Go Right!");
+                                break;
+                            }
+                        }
+
+                        alert.showAndWait();
+                    }
+                });
+
+    }
+
+
+    @Override
     public void setMoveMade(String s) {
 	    if(s.equalsIgnoreCase("movemade"))
         {
@@ -324,6 +367,17 @@ public class SokobanGUIController extends Observable implements Initializable, V
         this.setChanged();
         this.notifyObservers(params);
     }
+    @FXML
+    private void hint()
+    {
+        LinkedList<String> params=new LinkedList<>();
+        params.add("hint");
+        this.setChanged();
+        this.notifyObservers(params);
+    }
+
+
+
 
 }
 
